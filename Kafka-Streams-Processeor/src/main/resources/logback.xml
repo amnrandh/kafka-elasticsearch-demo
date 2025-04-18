@@ -1,0 +1,20 @@
+<configuration>
+    <!-- Set root log level to INFO (or ERROR to reduce even more) -->
+    <root level="ERROR">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <!-- Set logging level for Kafka streams components to ERROR -->
+    <logger name="org.apache.kafka.streams" level="ERROR"/>
+    <logger name="org.apache.kafka" level="ERROR"/>
+
+    <!-- Optionally, configure other components -->
+    <logger name="org.springframework" level="ERROR"/>
+
+    <!-- Console appender configuration -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+</configuration>

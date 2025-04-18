@@ -5,7 +5,7 @@ curl -X POST -H "Content-Type: application/json" \
     "config": {
       "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
       "tasks.max": "1",
-      "database.hostname": "kafka-elasticsearch-demo-db-1",
+      "database.hostname": "kafka-elasticsearch-demo_db_1",
       "database.port": "5432",
       "database.user": "user",
       "database.password": "password",
@@ -16,7 +16,7 @@ curl -X POST -H "Content-Type: application/json" \
       "plugin.name": "pgoutput",
       "slot.name": "debezium_slot",
       "publication.name": "debezium_pub",
-      "snapshot.mode": "always",
+      "snapshot.mode": "initial",
       "slot.drop.on.stop": "true",
       "tombstones.on.delete": "true",
       
