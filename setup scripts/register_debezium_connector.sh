@@ -19,12 +19,10 @@ curl -X POST -H "Content-Type: application/json" \
       "snapshot.mode": "initial",
       "slot.drop.on.stop": "true",
       "tombstones.on.delete": "true",
-      
       "key.converter": "org.apache.kafka.connect.json.JsonConverter",
       "key.converter.schemas.enable": "false",
       "value.converter": "org.apache.kafka.connect.json.JsonConverter",
       "value.converter.schemas.enable": "false",
-      
       "decimal.format": "NUMERIC",
       "json.output.decimal.format": "NUMERIC",
       "decimal.handling.mode": "string"

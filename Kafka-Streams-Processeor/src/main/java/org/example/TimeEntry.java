@@ -9,7 +9,7 @@ public class TimeEntry {
     private int id;
     
     @JsonProperty("project_id")
-    private int projectId;
+    private String projectId;
     
     @JsonProperty("user_id")
     private int userId;
@@ -32,11 +32,11 @@ public class TimeEntry {
         this.id = id;
     }
 
-    public int getProjectId() {
+    public String getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(int projectId) {
+    public void setProjectId(String projectId) {
         this.projectId = projectId;
     }
 

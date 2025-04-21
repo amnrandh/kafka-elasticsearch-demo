@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CdcEnvelope<T> {
-    @JsonProperty("before")
+
     private T before;
     private String op; // "r"=snapshot, "c"=insert, "u"=update, "d"=delete
 
@@ -14,14 +14,16 @@ public class CdcEnvelope<T> {
         this.op = op;
     }
     public String getOp() { return op; }
-    @JsonProperty("after")
+
     private T after;
 
     // Add these getter methods
+    @JsonProperty("before")
     public T getBefore() {
         return before;
     }
 
+    @JsonProperty("after")
     public T getAfter() {
         return after;
     }

@@ -11,6 +11,19 @@ public class EnrichedTimeEntry {
         this.customer = customer;
     }
 
+
+    public TimeEntry getTimeEntry() {
+        return timeEntry;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
     @Override
     public String toString() {
         return "EnrichedTimeEntry{" +

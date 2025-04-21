@@ -33,11 +33,16 @@ public class SimpleCustomerStreamProcessor {
         StreamsBuilder builder = new StreamsBuilder();
 
         // 2. ADD DEBUG PEEK TO SEE RAW RECORDS
+        // Create a GlobalKTable for Projects (We don't need to create a KStream for Projects)
+        GlobalKTable<Integer, Project> projectTable = builder.globalTable(
+                "dbserver1.public.projects", // Kafka topic for Projects
+                Consumed.with(Serdes.Integer(), new JsonSerde<>(Project.class))  // Use JsonSerde directly for the Project class
+        );
+
         KStream<String, CdcEnvelope<TimeEntry>> cdcStream = builder
             .stream("dbserver1.public.time_entries",
-                   Consumed.with(Serdes.String(), new CdcSerde<>(TimeEntry.class)))
-            .peek((k, v)  -> System.out.println("RAW CDC: " + v));
-
+                   Consumed.with(Serdes.String(), new CdcSerde<>(TimeEntry.class)));
+            //.peek((k, v)  -> System.out.println("RAW CDC: " + v));
         // 3. FIX HOURS_WORKED HANDLING (STRING TO DOUBLE)
         KStream<String, Double> hourDeltas = cdcStream.flatMap(
                 (key, envelope) -> {
@@ -79,19 +84,19 @@ public class SimpleCustomerStreamProcessor {
         );
 
         hourDeltas
-            .groupByKey(Grouped.with(Serdes.String(), Serdes.Double()))
-            .aggregate(
-                () -> 0.0,
-                (projectId, delta, total) -> {
-                    //System.out.printf("Updating %s with %.2f%n", projectId, delta);
-                    return total + delta;
-                },
-                Materialized.<String, Double, KeyValueStore<Bytes, byte[]>>as("project-hours-store")
-                    .withKeySerde(Serdes.String())
-                    .withValueSerde(Serdes.Double())
-            )
-            .toStream()
-            .peek((k, v) -> System.out.println("Aggregated: " + k + " => " + v));
+                .groupByKey(Grouped.with(Serdes.String(), Serdes.Double()))
+                .aggregate(
+                        () -> 0.0,
+                        (projectId, delta, total) -> {
+                            //System.out.printf("Updating %s with %.2f%n", projectId, delta);
+                            return total + delta;
+                        },
+                        Materialized.<String, Double, KeyValueStore<Bytes, byte[]>>as("project-hours-store")
+                                .withKeySerde(Serdes.String())
+                                .withValueSerde(Serdes.Double())
+                )
+                .toStream()
+                .peek((k, v) -> System.out.println("Aggregated: " + k + " => " + v));
 
         KafkaStreams streams = new KafkaStreams(builder.build(), props);
 
