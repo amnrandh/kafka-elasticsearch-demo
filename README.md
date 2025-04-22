@@ -62,17 +62,14 @@ This project shows how to move costly SQL queries to Elasticsearch. It uses Chan
 - **Monitoring**: Track query performance, consumer lag, and sync health.
 
 ## Architecture Overview
-graph TD
-    A[PostgreSQL Database] --> B[Debezium Connector (via Kafka Connect)]
-    B --> C[Kafka Broker]
-    C --> D[Kafka Consumer (Custom Consumer)]
-    D --> E[Elasticsearch]
-    E --> F[Kibana (Optional)]
-    A -->|Change Data Capture| B
-    B -->|Streams Changes| C
-    C -->|Processes CDC Events| D
-    D -->|Denormalized Data| E
-    E -->|Fast Queries| F
+```mermaid
+flowchart TD
+    A["PostgreSQL Database"] -->|Change Data Capture| B["Debezium Connector via Kafka Connect"]
+    B -->|Streams Changes| C["Kafka Broker"]
+    C -->|Processes CDC Events| D["Kafka Consumer (Custom Consumer)"]
+    D -->|Denormalized Data| E["Elasticsearch"]
+    E -->|Fast Queries| F["Kibana (Optional)"]
+```
 
 ### PostgreSQL Database:
 - Contains normalized data tables (e.g., Customers, Projects, TimeEntries).
