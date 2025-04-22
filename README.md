@@ -83,16 +83,16 @@ flowchart TD
 - Acts as the intermediary to buffer CDC events.
 - Consumer groups process these messages and commit offsets for reliable, at-least-once delivery.
 
-### Elasticsearch:
-- A sink for denormalized data derived from SQL changes.
-- Provides fast full-text search and aggregations.
-- **Kibana (optional)** can be used for monitoring and visualizations.
-
 ### Custom Consumer (Kafka Streams App):
 - Processes Kafka messages, transforms them, and updates the project_summary index in Elasticsearch.
 - Manages offsets and ensures idempotency using unique document IDs.
 > **Note:** This is a Kafka Streams application. If you're new to Streams or need a refresher on how it handles things like joins, you can check out this guide from Confluent:  
 > [Understanding Joins in Kafka Streams](https://docs.confluent.io/platform/current/streams/developer-guide/dsl-api.html#joins)
+
+### Elasticsearch:
+- A sink for denormalized data derived from SQL changes.
+- Provides fast full-text search and aggregations.
+- **Kibana (optional)** can be used for monitoring and visualizations.
 
 ## Getting Started
 
