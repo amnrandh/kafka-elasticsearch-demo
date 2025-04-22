@@ -168,6 +168,103 @@ Create a JSON configuration file (e.g., `debezium-connector-config.json`) simila
   }
 }
 ```
+
+## Querying Elasticsearch
+
+Elasticsearch provides a variety of query types to search, filter, and analyze data. Below are commonly used query patterns.
+
+### 1. Full-Text Search
+
+Allows searching content within text fields using analyzed tokens.
+
+- **Match Query** – Searches for text in analyzed fields:
+  ```json
+  {
+    "query": {
+      "match": {
+        "field_name": "search text"
+      }
+    }
+  }
+  ```
+
+- **Fuzzy Matching** – Handles typos and similar terms using fuzziness:
+  ```json
+  {
+    "query": {
+      "match": {
+        "field_name": {
+          "query": "serch",
+          "fuzziness": "AUTO"
+        }
+      }
+    }
+  }
+  ```
+
+### 2. Exact Match
+
+Used with non-analyzed keyword fields for precise matches.
+
+- **Term Query**:
+  ```json
+  {
+    "query": {
+      "term": {
+        "field_name": "exact_value"
+      }
+    }
+  }
+  ```
+
+### 3. Boolean Queries
+
+Combines multiple queries using logical operators (`must`, `should`, `must_not`).
+
+- **Example**:
+  ```json
+  {
+    "query": {
+      "bool": {
+        "must": [
+          { "match": { "field_name": "value" } }
+        ],
+        "should": [
+          { "term": { "field_name": "optional_value" } }
+        ]
+      }
+    }
+  }
+  ```
+
+### 4. Range Queries
+
+Filters documents based on numerical or date field ranges.
+
+- **Example**:
+  ```json
+  {
+    "query": {
+      "range": {
+        "date_field": {
+          "gte": "2021-01-01",
+          "lte": "2021-12-31"
+        }
+      }
+    }
+  }
+  ```
+
+---
+
+### Learn More
+
+- [Elasticsearch Full-Text Search Documentation](https://www.elastic.co/guide/en/elasticsearch/reference/current/full-text.html)  
+- [Elasticsearch Analysis](https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis.html)  
+- [Elasticsearch Query DSL](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html)
+
+
+
 # Data Integrity and Backfilling
 
 ## No Retroactive Updates for Project/Customer Names
