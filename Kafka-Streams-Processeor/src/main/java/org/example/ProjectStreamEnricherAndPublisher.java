@@ -41,12 +41,13 @@ public class ProjectStreamEnricherAndPublisher {
         KTable<String, EnrichedProject> enrichedProjectView = joinProjectAndCustomerData(projectsTable, customerTable, projectHoursTable);
 
         enrichedProjectView.toStream()
+                .selectKey((key, enriched) -> enriched.getProjectId()) // Set the project_id as the key
                 .peek((key, enriched) -> {
                     logger.info("Final Enriched Output: " + enriched);
                     System.out.println("Final Enriched Output: " + enriched);
-
                 })
-                .to("enriched-projects", Produced.with(Serdes.String(), new EnrichedProjectSerde()));
+                .to("project_summary", Produced.with(Serdes.String(), new EnrichedProjectSerde()));
+
 
         KafkaStreams streams = new KafkaStreams(builder.build(), props);
         final CountDownLatch latch = new CountDownLatch(1);
