@@ -107,6 +107,14 @@ Exactly-Once Semantics: Enabled via processing.guarantee="exactly_once" (+20% ov
 
 Monitoring: Track kafka_consumer_failed_messages_total
 
+### Consistency Guarantees
+For writes followed by reads:
+
+```sql
+INSERT INTO orders...;  
+-- Force read from PostgreSQL  
+SELECT * FROM orders WHERE id=? FOR UPDATE;  
+```
 
 ### Backpressure Handling
 ```java
@@ -224,14 +232,14 @@ flowchart TD
 - Provides fast full-text search and aggregations.
 - **Kibana (optional)** can be used for monitoring and visualizations.
 
-### Code Sample Disclaimer
+### ** Code Sample Disclaimer **
 The examples show simplified logic for clarity. Production implementations include:
 -Schema Registry: Avro schemas with compatibility checks
 
-python
-# Real-world example:
+```python
 schema = avro.schema.Parse(open("order.avsc").read())
 writer = DataFileWriter(open("orders.avro", "wb"), DatumWriter(), schema)
+```
 
 ## Getting Started
 
